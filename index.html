@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biologiya — Многоклеточный организм</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Mikroskop shaklidagi Favicon linki -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2310b981' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M6 18h8'/><path d='M3 22h18'/><path d='M14 22a7 7 0 1 0-14 0'/><path d='M9 14h2'/><path d='M9 12a2 2 0 0 1-2-2V6a2 2 0 0 1 4 0v4a2 2 0 0 1-2 2Z'/><path d='M12 6V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3'/></svg>">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #03130d;
+            color: #e2f1e8;
+            overflow-x: hidden;
+        }
+
+        /* Dark Glassmorphism Effects */
+        .glass-card {
+            background: rgba(8, 35, 24, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(46, 213, 115, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .glass-card-hover {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .glass-card-hover:hover {
+            transform: translateY(-6px) scale(1.01);
+            border-color: rgba(46, 213, 115, 0.45);
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.2);
+        }
+
+        .glass-banner {
+            background: rgba(16, 185, 129, 0.12);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+        }
+
+        .glow-effect {
+            position: relative;
+        }
+        .glow-effect::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, #059669, #10b981, #34d399, #059669);
+            border-radius: inherit;
+            z-index: -1;
+            filter: blur(10px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .glow-effect:hover::before {
+            opacity: 0.6;
+        }
+
+        /* Scroll Animations Base */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+        .stagger-4 { transition-delay: 0.4s; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #03130d;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #10b981;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #34d399;
+        }
+
+        /* Modal Overlay Animation */
+        .modal-blur {
+            backdrop-filter: blur(10px);
+        }
+
+        /* Custom Preloader Animations */
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes reverseSpin {
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
+        }
+        .animate-spin-slow {
+            animation: spinSlow 12s linear infinite;
+        }
+        .animate-reverse-spin {
+            animation: reverseSpin 8s linear infinite;
+        }
+
+        #preloader-bar {
+            transition: width 0.2s ease-linear;
+        }
+
+        #preloader-status {
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-[#03130d] text-emerald-50 selection:bg-emerald-500 selection:text-white">
+
+    <!-- PRELOADER OVERLAY -->
+    <div id="preloader" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#030205] overflow-hidden transition-opacity duration-700">
+        <!-- 1. KATTA ORQA FON RASMI -->
+        <div id="bg-image" class="absolute inset-0 z-0 bg-center bg-cover bg-no-repeat opacity-40 scale-105 transition-all duration-1000 ease-out" 
+             style="background-image: url('./animatsiya.jpg');">
+        </div>
+
+        <!-- Vspyshka (Yarqirash) qatlami -->
+        <div id="flash-overlay" class="absolute inset-0 z-30 bg-white opacity-0 pointer-events-none transition-opacity duration-500"></div>
+
+        <!-- Markaziy doiralar -->
+        <div id="central-content" class="relative z-10 flex items-center justify-center w-72 h-72 sm:w-96 sm:h-96 transition-all duration-500">
+            <!-- Tashqi aylanuvchi xalqa -->
+            <div class="absolute inset-0 rounded-full border-2 border-red-600/40 animate-spin-slow shadow-[0_0_50px_rgba(220,38,38,0.5)]"></div>
+            <div class="absolute inset-2 rounded-full border border-orange-500/30 animate-reverse-spin"></div>
+            
+            <!-- Ichki doira -->
+            <div class="w-48 h-48 sm:w-60 sm:h-60 rounded-full bg-black/80 backdrop-blur-sm shadow-[0_0_60px_15px_rgba(239,68,68,0.7)] flex items-center justify-center relative overflow-hidden border border-red-500/50">
+                <div class="w-full h-full rounded-full bg-gradient-to-tr from-red-950 via-red-600 to-amber-500 opacity-20 animate-pulse"></div>
+            </div>
+            
+            <!-- Sarlavha va Status matni -->
+            <div class="absolute z-20 text-center px-4">
+                <h1 class="text-2xl sm:text-3xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-400 to-amber-300 uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
+                    Biologiya
+                </h1>
+                <p id="preloader-status" class="text-[10px] sm:text-xs text-red-200/80 tracking-widest mt-1 uppercase font-semibold">
+                    Загрузка систем...
+                </p>
+            </div>
+        </div>
+
+        <!-- Progress Bar & Foiz indikatori -->
+        <div id="progress-container" class="relative z-10 mt-12 w-64 sm:w-80 space-y-2 text-center transition-all duration-500">
+            <div class="w-full bg-red-950/60 h-2 rounded-full overflow-hidden border border-red-500/30 p-0.5">
+                <div id="preloader-bar" class="bg-gradient-to-r from-red-600 via-orange-500 to-amber-400 h-full rounded-full w-0 transition-all duration-200 ease-linear shadow-[0_0_12px_rgba(249,115,22,0.8)]"></div>
+            </div>
+            <div class="flex justify-between items-center text-xs font-mono text-red-400/80 px-1">
+                <span>ПРОГРЕСС</span>
+                <span id="preloader-counter">0%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER -->
+    <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300 glass-card border-b border-emerald-900/40 bg-[#03130d]/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
+                    <i data-lucide="leaf" class="w-6 h-6"></i>
+                </div>
+                <span class="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-400 to-teal-200 bg-clip-text text-transparent">Biologiya</span>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-emerald-100/80">
+                <a href="#hero" class="hover:text-emerald-400 transition-colors">Главная</a>
+                <a href="#section-1" class="hover:text-emerald-400 transition-colors">Разделы</a>
+                <a href="#section-4" class="hover:text-emerald-400 transition-colors">Материалы</a>
+                <a href="#section-10" class="hover:text-emerald-400 transition-colors">Тесты</a>
+                <a href="#footer" class="hover:text-emerald-400 transition-colors">Контакты</a>
+            </nav>
+
+            <!-- Search & Actions -->
+            <div class="flex items-center gap-4">
+                <div class="relative hidden sm:block">
+                    <input type="text" placeholder="Поиск..." class="bg-emerald-950/60 border border-emerald-800/50 rounded-full py-2 pl-9 pr-4 text-sm text-emerald-100 placeholder-emerald-500 focus:outline-none focus:border-emerald-400 w-40 focus:w-56 transition-all">
+                    <i data-lucide="search" class="w-4 h-4 absolute left-3 top-2.5 text-emerald-500"></i>
+                </div>
+                <button onclick="openModal('Тестирование по биологии', 'Пройдите интерактивный тест по многоклеточным организмам, чтобы проверить свои знания!')" class="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold px-5 py-2.5 rounded-full text-sm shadow-lg shadow-emerald-950/50 hover:shadow-emerald-500/20 transition-all hover:scale-105">
+                    Тесты
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-24 space-y-20 pb-16">
+
+        <!-- 1. HERO BLOCK -->
+        <section id="hero" class="relative min-h-[85vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12 overflow-hidden">
+            <!-- Background Image with Overlay -->
+            <div class="absolute inset-0 z-0">
+                <img src="./embellir-menard-2.jpg" alt="Tiger Background" class="w-full h-full object-cover object-center opacity-30 scale-105 animate-pulse" style="animation-duration: 8s;">
+                <div class="absolute inset-0 bg-gradient-to-t from-[#03130d] via-[#03130d]/70 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-[#03130d] via-transparent to-[#03130d]"></div>
+            </div>
+
+            <div class="relative z-10 max-w-5xl mx-auto text-center space-y-8 reveal">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-banner text-emerald-300 text-sm font-semibold mb-2 border border-emerald-500/30">
+                    <i data-lucide="sparkles" class="w-4 h-4 text-emerald-400"></i>
+                    Интерактивный образовательный портал
+                </div>
+
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-tight">
+                    Многоклеточный <br>
+                    <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-green-200 bg-clip-text text-transparent">организм</span>
+                </h1>
+
+                <p class="text-lg sm:text-2xl text-emerald-200/90 font-medium max-w-3xl mx-auto">
+                    «Специализация клеток — основа сложной жизни!»
+                </p>
+
+                <p class="text-sm sm:text-base text-emerald-300/70 max-w-2xl mx-auto leading-relaxed">
+                    Исследуйте сложный мир многоклеточных животных, растений и грибов, состоящих из миллиардов специализированных клеток, тканей и органов.
+                </p>
+
+                <div class="flex flex-wrap items-center justify-center gap-4 pt-4">
+                    <a href="#section-1" class="px-8 py-4 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-base transition-all transform hover:scale-105 shadow-lg shadow-emerald-500/30 flex items-center gap-2">
+                        Начать изучение <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </a>
+                    <button onclick="openModal('Каталог тестов', 'Вам доступны интерактивные вопросы по строению и жизнедеятельности многоклеточных организмов.')" class="px-8 py-4 rounded-2xl glass-card hover:bg-emerald-900/40 text-emerald-200 font-bold text-base transition-all border border-emerald-500/30 hover:border-emerald-400">
+                        Тесты
+                    </button>
+                </div>
+
+                <!-- Lower Status Bar Badges -->
+                <div class="pt-12 grid grid-cols-2 md:grid-cols-5 gap-3 text-left">
+                    <div class="glass-card p-3 rounded-xl border border-emerald-500/20 text-xs">
+                        <div class="font-bold text-emerald-400 text-base">100+</div>
+                        <div class="text-emerald-200/70">Материалов</div>
+                    </div>
+                    <div class="glass-card p-3 rounded-xl border border-emerald-500/20 text-xs">
+                        <div class="font-bold text-emerald-400 text-base">Видео</div>
+                        <div class="text-emerald-200/70">Интерактивные уроки</div>
+                    </div>
+                    <div class="glass-card p-3 rounded-xl border border-emerald-500/20 text-xs">
+                        <div class="font-bold text-emerald-400 text-base">Схемы</div>
+                        <div class="text-emerald-200/70">Ткани и органы</div>
+                    </div>
+                    <div class="glass-card p-3 rounded-xl border border-emerald-500/20 text-xs">
+                        <div class="font-bold text-emerald-400 text-base">Конспекты</div>
+                        <div class="text-emerald-200/70">Готовые выжимки</div>
+                    </div>
+                    <div class="glass-card p-3 rounded-xl border border-emerald-500/20 text-xs col-span-2 md:col-span-1 bg-emerald-500/10 border-emerald-400/40">
+                        <div class="font-bold text-emerald-300 text-xs">Макромир в действии!</div>
+                        <div class="text-emerald-400/70 text-[10px]">Акцент раздела</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24">
+
+            <!-- CARD 01: Что такое многоклеточные организмы? -->
+            <section id="section-1" class="reveal">
+                <div class="glass-card rounded-3xl p-6 sm:p-10 border border-emerald-500/20 relative overflow-hidden glass-card-hover">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                        <div class="lg:col-span-7 space-y-6">
+                            <div class="inline-flex items-center gap-2 text-emerald-400 font-bold text-lg">
+                                <span class="px-3 py-1 bg-emerald-500/20 rounded-lg border border-emerald-500/30">01</span>
+                                <span>Что такое многоклеточные организмы?</span>
+                            </div>
+                            <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Высокоорганизованные биологические системы</h2>
+                            <p class="text-emerald-100/80 leading-relaxed">
+                                Многоклеточные организмы — это живые существа, тело которых состоит из множества клеток, дифференцированных по строению и выполняемым функциям. Отдельные клетки теряют самостоятельность, объединяясь в ткани, органы и целостные системы.
+                            </p>
+                            <!-- Feature pills -->
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+                                <div class="glass-banner p-3 rounded-xl text-center border border-emerald-500/20">
+                                    <i data-lucide="layers" class="w-5 h-5 mx-auto mb-1 text-emerald-400"></i>
+                                    <span class="text-xs font-semibold text-emerald-200">Ткани</span>
+                                </div>
+                                <div class="glass-banner p-3 rounded-xl text-center border border-emerald-500/20">
+                                    <i data-lucide="activity" class="w-5 h-5 mx-auto mb-1 text-emerald-400"></i>
+                                    <span class="text-xs font-semibold text-emerald-200">Органы</span>
+                                </div>
+                                <div class="glass-banner p-3 rounded-xl text-center border border-emerald-500/20">
+                                    <i data-lucide="cpu" class="w-5 h-5 mx-auto mb-1 text-emerald-400"></i>
+                                    <span class="text-xs font-semibold text-emerald-200">Регуляция</span>
+                                </div>
+                                <div class="glass-banner p-3 rounded-xl text-center border border-emerald-500/20">
+                                    <i data-lucide="globe" class="w-5 h-5 mx-auto mb-1 text-emerald-400"></i>
+                                    <span class="text-xs font-semibold text-emerald-200">Царства</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lg:col-span-5 relative">
+                            <div class="relative rounded-2xl overflow-hidden border border-emerald-500/30 group">
+                                <img src="./11111.jpg" alt="Multicellular life" class="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500">
+                                <div class="absolute inset-0 bg-gradient-to-t from-[#03130d] via-transparent to-transparent"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Bottom banner -->
+                    <div class="mt-8 pt-4 border-t border-emerald-800/40 flex items-center justify-between glass-banner px-6 py-3 rounded-xl">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="leaf" class="w-5 h-5 text-emerald-400"></i>
+                            <span class="text-sm font-medium text-emerald-200">«Единство специализированных клеток создает сложную жизнь»</span>
+                        </div>
+                        <button onclick="openModal('Что такое многоклеточные?', 'В многоклеточном организме клетки специализируются: одни отвечают за движение, другие за питание, третьи за защиту.')" class="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-300 hover:bg-emerald-500 hover:text-slate-950 transition-all">
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CARD 02: Классификация многоклеточных организмов -->
+            <section id="section-2" class="reveal">
+                <div class="glass-card rounded-3xl p-6 sm:p-10 border border-emerald-500/20 relative overflow-hidden glass-card-hover">
+                    <div class="mb-8">
+                        <div class="inline-flex items-center gap-2 text-emerald-400 font-bold text-lg mb-2">
+                            <span class="px-3 py-1 bg-emerald-500/20 rounded-lg border border-emerald-500/30">02</span>
+                            <span>Классификация многоклеточных организмов</span>
+                        </div>
+                        <h2 class="text-3xl font-extrabold text-white">Основные Царства и Группы</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
+                        <div class="glass-banner p-5 rounded-2xl border border-emerald-500/20 flex items-center gap-4 hover:border-emerald-400/50 transition-all">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0"><i data-lucide="sprout" class="w-6 h-6"></i></div>
+                            <div>
+                                <h3 class="font-bold text-white">Высшие растения</h3>
+                                <p class="text-xs text-emerald-300/70">Моховидные, папоротники, голосеменные и цветковые</p>
+                            </div>
+                        </div>
+
+                        <div class="glass-banner p-5 rounded-2xl border border-emerald-500/20 flex items-center gap-4 hover:border-emerald-400/50 transition-all">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0"><i data-lucide="bug" class="w-6 h-6"></i></div>
+                            <div>
+                                <h3 class="font-bold text-white">Беспозвоночные</h3>
+                                <p class="text-xs text-emerald-300/70">Губки, кишечнополостные, черви, моллюски, членистоногие</p>
+                            </div>
+                        </div>
+
+                        <div class="glass-banner p-5 rounded-2xl border border-emerald-500/20 flex items-center gap-4 hover:border-emerald-400/50 transition-all">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0"><i data-lucide="heart-pulse" class="w-6 h-6"></i></div>
+                            <div>
+                                <h3 class="font-bold text-white">Позвоночные</h3>
+                                <p class="text-xs text-emerald-300/70">Рыбы, земноводные, пресмыкающиеся, птицы, млекопитающие</p>
+                            </div>
+                        </div>
+
+                        <div class="glass-banner p-5 rounded-2xl border border-emerald-500/20 flex items-center gap-4 hover:border-emerald-400/50 transition-all">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0"><i data-lucide="cloud-rain" class="w-6 h-6"></i></div>
+                            <div>
+                                <h3 class="font-bold text-white">Шляпочные грибы</h3>
+                                <p class="text-xs text-emerald-300/70">Многоклеточные мицелии и плодовые тела</p>
+                            </div>
+                        </div>
+
+                        <div class="glass-banner p-5 rounded-2xl border border-emerald-500/20 flex items-center gap-4 hover:border-emerald-400/50 transition-all">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0"><i data-lucide="waves" class="w-6 h-6"></i></div>
+                            <div>
+                                <h3 class="font-bold text-white">Многоклеточные водоросли</h3>
+                                <p class="text-xs text-emerald-300/70">Зеленые, бурые и красные морские водоросли</p>
+                            </div>
+                        </div>
+
+                        <div class="glass-banner p-5 rounded-2xl border border-emerald-500/20 flex items-center gap-4 hover:border-emerald-400/50 transition-all">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0"><i data-lucide="grid" class="w-6 h-6"></i></div>
+                            <div>
+                                <h3 class="font-bold text-white">Колониальные формы</h3>
+                                <p class="text-xs text-emerald-300/70">Промежуточное звено эволюции (Вольвокс)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Banner -->
+                    <div class="mt-8 rounded-2xl overflow-hidden relative h-40 flex items-center p-6 border border-emerald-500/30">
+                        <img src="https://images.unsplash.com/photo-1504470695779-75300268aa0e?auto=format&fit=crop&q=80&w=1200" alt="Mushrooms" class="absolute inset-0 w-full h-full object-cover opacity-40">
+                        <div class="absolute inset-0 bg-gradient-to-r from-[#03130d] via-[#03130d]/80 to-transparent"></div>
+                        <div class="relative z-10 flex items-center justify-between w-full">
+                            <div class="flex items-center gap-3">
+                                <i data-lucide="leaf" class="w-6 h-6 text-emerald-400"></i>
+                                <span class="text-base font-semibold text-emerald-100">Многообразие многоклеточных форм поражает своим масштабом!</span>
+                            </div>
+                            <button onclick="openModal('Классификация', 'Все многоклеточные делятся на эукариотические царства: Растения, Животные и Грибы.')" class="w-10 h-10 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-300 hover:bg-emerald-500 hover:text-slate-950 transition-all">
+                                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CARD 03: Строение многоклеточного организма -->
+            <section id="section-3" class="reveal">
+                <div class="glass-card rounded-3xl p-6 sm:p-10 border border-emerald-500/20 relative overflow-hidden glass-card-hover">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                        <div class="lg:col-span-6 space-y-6">
+                            <div class="inline-flex items-center gap-2 text-emerald-400 font-bold text-lg">
+                                <span class="px-3 py-1 bg-emerald-500/20 rounded-lg border border-emerald-500/30">03</span>
+                                <span>Строение многоклеточного организма</span>
+                            </div>
+                            <h2 class="text-3xl font-extrabold text-white">Иерархическая организация</h2>
+                            
+                            <ul class="space-y-4">
+                                <li class="flex items-center gap-3">
+                                    <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold">1</div>
+                                    <span class="text-emerald-100"><strong class="text-emerald-300">Клеточный уровень:</strong> Специализированные клетки с ядрами и органоидами</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold">2</div>
+                                    <span class="text-emerald-100"><strong class="text-emerald-300">Тканевый уровень:</strong> Совокупность сходных клеток и межклеточного вещества</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold">3</div>
+                                    <span class="text-emerald-100"><strong class="text-emerald-300">Органный уровень:</strong> Комплекс тканей, выполняющих конкретную функцию</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold">4</div>
+                                    <span class="text-emerald-100"><strong class="text-emerald-300">Системный уровень:</strong> Объединение органов в целостный организм</span>
+                                </li>
+                            </ul>
+
+                            <button onclick="openModal('Иерархическая организация', 'От клетки к ткани, от ткани к органу, от органа к системе органов — такова лестница сложности многоклеточных.')" class="px-6 py-3 rounded-xl bg-emerald-500/20 hover:bg-emerald-500 hover:text-slate-950 text-emerald-300 font-bold border border-emerald-500/30 transition-all flex items-center gap-2">
+                                Подробнее <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+
+                        <!-- 3D style cell model diagram -->
+                        <div class="lg:col-span-6 relative flex justify-center items-center">
+                            <div class="relative w-full max-w-md aspect-square rounded-full bg-gradient-to-br from-emerald-900/40 via-teal-900/20 to-transparent border border-emerald-500/30 flex items-center justify-center p-8">
+                                <div class="w-3/4 h-3/4 rounded-full bg-emerald-800/30 border-2 border-dashed border-emerald-400/50 flex items-center justify-center relative animate-spin" style="animation-duration: 25s;">
+                                    <div class="w-1/2 h-1/2 rounded-full bg-emerald-500/30 border border-emerald-300 flex items-center justify-center">
+                                        <div class="w-8 h-8 rounded-full bg-emerald-400 shadow-lg shadow-emerald-400"></div>
+                                    </div>
+                                </div>
+
+                                <div class="absolute top-4 left-4 glass-banner px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-300 border border-emerald-400/40">1. Клетка</div>
+                                <div class="absolute top-8 right-4 glass-banner px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-300 border border-emerald-400/40">2. Ткань</div>
+                                <div class="absolute bottom-8 left-4 glass-banner px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-300 border border-emerald-400/40">3. Орган</div>
+                                <div class="absolute bottom-4 right-4 glass-banner px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-300 border border-emerald-400/40">4. Организм</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom banner -->
+                    <div class="mt-8 pt-4 border-t border-emerald-800/40 flex items-center justify-between glass-banner px-6 py-3 rounded-xl">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="leaf" class="w-5 h-5 text-emerald-400"></i>
+                            <span class="text-sm font-medium text-emerald-200">Изучение систем органов — ключ к пониманию физиологии.</span>
+                        </div>
+                        <button onclick="openModal('Строение организма', 'Каждая ткань адаптирована под конкретную работу: нервная передает импульсы, мышечная сокращается.')" class="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-300 hover:bg-emerald-500 hover:text-slate-950 transition-all">
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CARD 04: Ткани и Органы -->
+            <section id="section-4" class="reveal">
+                <div class="glass-card rounded-3xl p-6 sm:p-10 border border-emerald-500/20 relative overflow-hidden glass-card-hover">
+                    <div class="mb-8">
+                        <div class="inline-flex items-center gap-2 text-emerald-400 font-bold text-lg mb-2">
+                            <span class="px-3 py-1 bg-emerald-500/20 rounded-lg border border-emerald-500/30">04</span>
+                            <span>Ткани и Органы</span>
+                        </div>
+                        <h2 class="text-3xl font-extrabold text-white">Разнообразие тканей и специализация</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-4">
+                            <h3 class="text-xl font-bold text-emerald-300 flex items-center gap-2">
+                                <i data-lucide="layers" class="w-5 h-5"></i> Ткани животных
+                            </h3>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="glass-banner p-4 rounded-xl border border-emerald-500/20">
+                                    <div class="font-bold text-white text-sm">Эпителиальная</div>
+                                    <div class="text-xs text-emerald-300/70 mt-1">Защита и секреция</div>
+                                </div>
+                                <div class="glass-banner p-4 rounded-xl border border-emerald-500/20">
+                                    <div class="font-bold text-white text-sm">Соединительная</div>
+                                    <div class="text-xs text-emerald-300/70 mt-1">Опора и транспорт</div>
+                                </div>
+                                <div class="glass-banner p-4 rounded-xl border border-emerald-500/20">
+                                    <div class="font-bold text-white text-sm">Мышечная</div>
+                                    <div class="text-xs text-emerald-300/70 mt-1">Движение и сокращение</div>
+                                </div>
+                                <div class="glass-banner p-4 rounded-xl border border-emerald-500/20">
+                                    <div class="font-bold text-white text-sm">Нервная</div>
+                                    <div class="text-xs text-emerald-300/70 mt-1">Проведение сигналов</div>
+                                </div>
+                            </div>
+                            <div class="rounded-xl overflow-hidden h-32 border border-emerald-500/30 relative">
+                                <img src="https://images.unsplash.com/photo-1504470695779-75300268aa0e?auto=format&fit=crop&q=80&w=1200" alt="Microscope view" class="w-full h-full object-cover opacity-60">
+                                <div class="absolute inset-0 bg-gradient-to-r from-[#03130d] via-transparent to-transparent"></div>
+                                <div class="absolute bottom-3 left-3 text-xs font-semibold text-emerald-200">Микроскопический вид ткани</div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <h3 class="text-xl font-bold text-emerald-300 flex items-center gap-2">
+                                <i data-lucide="sprout" class="w-5 h-5"></i> Ткани растений
+                            </h3>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="glass-banner p-4 rounded-xl border border-emerald-500/20">
+                                    <div class="font-bold text-white text-sm">Покровная</div>
+                                    <div class="text-xs text-emerald-300/70 mt-1">Защитная функция</div>
+                                </div>
+                                <div class="glass-banner p-4 rounded-xl border border-emerald-500/20">
+                                    <div class="font-bold text-white text-sm">Проводящая</div>
+                                    <div class="text-xs text-emerald-300/70 mt-1">Ксилема и флоэма</div>
+                                </div>
+                                <div class="glass-banner p-4 rounded-xl border border-emerald-500/20">
+                                    <div class="font-bold text-white text-sm">Основная</div>
+                                    <div class="text-xs text-emerald-300/70 mt-1">Фотосинтез и запасы</div>
+                                </div>
+                                <div class="glass-banner p-4 rounded-xl border border-emerald-500/20">
+                                    <div class="font-bold text-white text-sm">Образовательная</div>
+                                    <div class="text-xs text-emerald-300/70 mt-1">Меристема (рост)</div>
+                                </div>
+                            </div>
+                            <div class="rounded-xl overflow-hidden h-32 border border-emerald-500/30 relative bg-gradient-to-r from-emerald-950 to-teal-900 flex items-center justify-center p-4">
+                                <i data-lucide="heart" class="w-16 h-16 text-emerald-400 animate-pulse"></i>
+                                <span class="ml-4 text-xs font-semibold text-emerald-200">Работа кровеносной и проводящей систем</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 flex justify-end">
+                        <button onclick="openModal('Ткани и органы', 'Совокупность нескольких типов тканей образует орган, например, сердце, печень или лист растения.')" class="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold transition-all flex items-center gap-2">
+                            Перейти к разделу <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CARD 05: Процессы жизнедеятельности -->
+            <section id="section-5" class="reveal">
+                <div class="glass-card rounded-3xl p-6 sm:p-10 border border-emerald-500/20 relative overflow-hidden glass-card-hover">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                        <div class="lg:col-span-5 relative flex justify-center">
+                            <div class="w-full max-w-xs h-80 rounded-2xl bg-gradient-to-b from-emerald-900/50 to-emerald-950/80 border border-emerald-500/30 flex flex-col items-center justify-center relative overflow-hidden">
+                                <img src="./3d.jpg" alt="3D Organism" class="w-full h-full object-cover relative z-0">
+                                <div class="absolute inset-0 bg-gradient-to-t from-[#03130d] via-transparent to-transparent z-10 pointer-events-none"></div>
+                                
+                                <!-- YUMALOQ AUDIO TUGMASI -->
+                                <button onclick="toggleAudio('section5Audio', this)" class="absolute z-20 w-14 h-14 rounded-full bg-emerald-500/80 hover:bg-emerald-400 border border-emerald-300 text-slate-950 flex items-center justify-center shadow-lg shadow-emerald-950/80 hover:scale-110 transition-all duration-300 group">
+                                    <i data-lucide="play" class="w-6 h-6 ml-1 group-hover:scale-110 transition-transform"></i>
+                                </button>
+                                <audio id="section5Audio" src="./ElevenLabs_2026-09-27T11_08_03_Mikhail - Confident and Emotional_pvc_sp107_s76_sb89_se9_b_m2.mp3"></audio>
+
+                                <span class="absolute bottom-4 text-xs font-bold text-emerald-300 bg-emerald-900/80 px-3 py-1 rounded-full border border-emerald-500/30 z-20">3D Модель Организма</span>
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-7 space-y-6">
+                            <div class="inline-flex items-center gap-2 text-emerald-400 font-bold text-lg">
+                                <span class="px-3 py-1 bg-emerald-500/20 rounded-lg border border-emerald-500/30">05</span>
+                                <span>Процессы жизнедеятельности</span>
+                            </div>
+                            <h2 class="text-3xl font-extrabold text-white">Регуляция и обмен веществ</h2>
+
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                <div class="glass-banner p-3 rounded-xl border border-emerald-500/20 text-center">
+                                    <i data-lucide="utensils" class="w-5 h-5 mx-auto mb-1 text-emerald-400"></i>
+                                    <div class="text-xs font-bold text-emerald-100">Пищеварение</div>
+                                </div>
+                                <div class="glass-banner p-3 rounded-xl border border-emerald-500/20 text-center">
+                                    <i data-lucide="wind" class="w-5 h-5 mx-auto mb-1 text-emerald-400"></i>
+                                    <div class="text-xs font-bold text-emerald-100">Дыхание</div>
+                                </div>
+                                <div class="glass-banner p-3 rounded-xl border border-emerald-500/20 text-center">
+                                    <i data-lucide="activity" class="w-5 h-5 mx-auto mb-1 text-emerald-400"></i>
+                                    <div class="text-xs font-bold text-emerald-100">Кровообращение</div>
+                                </div>
+                                <div class="glass-banner p-3 rounded-xl border border-emerald-500/20 text-center">
+                                    <i data-lucide="droplet" class="w-5 h-5 mx-auto mb-1 text-emerald-400"></i>
+                                    <div class="text-xs font-bold text-emerald-100">Выделение</div>
+                                </div>
+                                <div class="glass-banner p-3 rounded-xl border border-emerald-500/20 text-center">
+                                    <i data-lucide="zap" class="w-5 h-5 mx-auto mb-1 text-emerald-400"></i>
+                                    <div class="text-xs font-bold text-emerald-100">Нервная регуляция</div>
+                                </div>
+                                <div class="glass-banner p-3 rounded-xl border border-emerald-500/20 text-center">
+                                    <i data-lucide="shield" class="w-5 h-5 mx-auto mb-1 text-emerald-400"></i>
+                                    <div class="text-xs font-bold text-emerald-100">Размножение</div>
+                                </div>
+                            </div>
+
+                            <button onclick="openModal('Жизнедеятельность', 'У многоклеточных регуляция осуществляется нервной и эндокринной системами для поддержания гомеостаза.')" class="px-6 py-3 rounded-xl bg-emerald-500/20 hover:bg-emerald-500 hover:text-slate-950 text-emerald-300 font-bold border border-emerald-500/30 transition-all flex items-center gap-2">
+                                Подробнее <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CARD 06: Значение и роль -->
+            <section id="section-6" class="reveal">
+                <div class="glass-card rounded-3xl p-6 sm:p-10 border border-emerald-500/20 relative overflow-hidden glass-card-hover">
+                    <div class="mb-8">
+                        <div class="inline-flex items-center gap-2 text-emerald-400 font-bold text-lg mb-2">
+                            <span class="px-3 py-1 bg-emerald-500/20 rounded-lg border border-emerald-500/30">06</span>
+                            <span>Значение и роль</span>
+                        </div>
+                        <h2 class="text-3xl font-extrabold text-white">Роль многоклеточных в биосфере и жизни человека</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="glass-banner p-6 rounded-2xl border border-emerald-500/20 space-y-3">
+                            <div class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+                                <i data-lucide="trees" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white">В природе</h3>
+                            <p class="text-sm text-emerald-200/80 leading-relaxed">
+                                Растения продуцируют кислород и органику; животные являются консументами и регулируют численность видов; грибы — доминирующие редуценты.
+                            </p>
+                        </div>
+
+                        <div class="glass-banner p-6 rounded-2xl border border-emerald-500/20 space-y-3">
+                            <div class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+                                <i data-lucide="user-check" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white">Для человека</h3>
+                            <p class="text-sm text-emerald-200/80 leading-relaxed">
+                                Источник продуктов питания, сырья для промышленности, лекарственных препаратов, а также основа сельского и лесного хозяйства.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Bottom banner -->
+                    <div class="mt-8 pt-4 border-t border-emerald-800/40 flex items-center justify-between glass-banner px-6 py-3 rounded-xl">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="leaf" class="w-5 h-5 text-emerald-400"></i>
+                            <span class="text-sm font-medium text-emerald-200">«Многоклеточные организмы формируют современный облик Земли.»</span>
+                        </div>
+                        <button onclick="openModal('Роль в природе', 'Леса называют легкими планеты, а животные помогают опылять растения и распространять семена.')" class="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-300 hover:bg-emerald-500 hover:text-slate-950 transition-all">
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CARD 07: Экология -->
+            <section id="section-7" class="reveal">
+                <div class="glass-card rounded-3xl p-6 sm:p-10 border border-emerald-500/20 relative overflow-hidden glass-card-hover">
+                    <div class="mb-8">
+                        <div class="inline-flex items-center gap-2 text-emerald-400 font-bold text-lg mb-2">
+                            <span class="px-3 py-1 bg-emerald-500/20 rounded-lg border border-emerald-500/30">07</span>
+                            <span>Экология</span>
+                        </div>
+                        <h2 class="text-3xl font-extrabold text-white">Среды обитания и адаптации</h2>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+                        <div class="glass-banner p-4 rounded-xl text-center border border-emerald-500/20">
+                            <i data-lucide="flower2" class="w-6 h-6 mx-auto mb-2 text-emerald-400"></i>
+                            <span class="text-xs font-bold text-emerald-100">Наземно-воздушная</span>
+                        </div>
+                        <div class="glass-banner p-4 rounded-xl text-center border border-emerald-500/20">
+                            <i data-lucide="git-commit" class="w-6 h-6 mx-auto mb-2 text-emerald-400"></i>
+                            <span class="text-xs font-bold text-emerald-100">Водная среда</span>
+                        </div>
+                        <div class="glass-banner p-4 rounded-xl text-center border border-emerald-500/20">
+                            <i data-lucide="mountain" class="w-6 h-6 mx-auto mb-2 text-emerald-400"></i>
+                            <span class="text-xs font-bold text-emerald-100">Почвенная среда</span>
+                        </div>
+                        <div class="glass-banner p-4 rounded-xl text-center border border-emerald-500/20">
+                            <i data-lucide="refresh-cw" class="w-6 h-6 mx-auto mb-2 text-emerald-400"></i>
+                            <span class="text-xs font-bold text-emerald-100">Организменная</span>
+                        </div>
+                    </div>
+
+                    <div class="rounded-2xl overflow-hidden relative h-48 flex items-end p-6 border border-emerald-500/30">
+                        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=1200" alt="Landscape Lake" class="absolute inset-0 w-full h-full object-cover opacity-50">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#03130d] via-transparent to-transparent"></div>
+                        <div class="relative z-10 flex items-center justify-between w-full">
+                            <div class="flex items-center gap-3">
+                                <i data-lucide="leaf" class="w-6 h-6 text-emerald-400"></i>
+                                <span class="text-sm font-semibold text-emerald-100">«Приспособления к среде определяют выживание вида!»</span>
+                            </div>
+                            <button onclick="openModal('Экология', 'Многоклеточные освоили все четыре среды обитания на планете Земля.')" class="w-10 h-10 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-300 hover:bg-emerald-500 hover:text-slate-950 transition-all">
+                                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CARD 08: Факторы развития -->
+            <section id="section-8" class="reveal">
+                <div class="glass-card rounded-3xl p-6 sm:p-10 border border-emerald-500/20 relative overflow-hidden glass-card-hover">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                        <div class="lg:col-span-5 relative">
+                            <div class="rounded-2xl overflow-hidden border border-emerald-500/30 relative h-64">
+                                <img src="./3.jpg" alt="Hands with sprout" class="w-full h-full object-cover opacity-80">
+                                <div class="absolute inset-0 bg-gradient-to-t from-[#03130d] via-transparent to-transparent"></div>
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-7 space-y-6">
+                            <div class="inline-flex items-center gap-2 text-emerald-400 font-bold text-lg">
+                                <span class="px-3 py-1 bg-emerald-500/20 rounded-lg border border-emerald-500/30">08</span>
+                                <span>Факторы, влияющие на развитие</span>
+                            </div>
+                            <h2 class="text-3xl font-extrabold text-white">Условия роста и онтогенеза</h2>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div class="glass-banner p-3.5 rounded-xl border border-emerald-500/20 flex items-center gap-3">
+                                    <i data-lucide="apple" class="w-5 h-5 text-emerald-400 shrink-0"></i>
+                                    <span class="text-xs font-semibold text-emerald-100">Питание и минеральные вещества</span>
+                                </div>
+                                <div class="glass-banner p-3.5 rounded-xl border border-emerald-500/20 flex items-center gap-3">
+                                    <i data-lucide="sun" class="w-5 h-5 text-emerald-400 shrink-0"></i>
+                                    <span class="text-xs font-semibold text-emerald-100">Свет, Температура, Влажность</span>
+                                </div>
+                                <div class="glass-banner p-3.5 rounded-xl border border-emerald-500/20 flex items-center gap-3">
+                                    <i data-lucide="dna" class="w-5 h-5 text-emerald-400 shrink-0"></i>
+                                    <span class="text-xs font-semibold text-emerald-100">Генетическая программа</span>
+                                </div>
+                                <div class="glass-banner p-3.5 rounded-xl border border-emerald-500/20 flex items-center gap-3">
+                                    <i data-lucide="users" class="w-5 h-5 text-emerald-400 shrink-0"></i>
+                                    <span class="text-xs font-semibold text-emerald-100">Гормональная регуляция</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom banner -->
+                    <div class="mt-8 pt-4 border-t border-emerald-800/40 flex items-center justify-between glass-banner px-6 py-3 rounded-xl">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="leaf" class="w-5 h-5 text-emerald-400"></i>
+                            <span class="text-sm font-medium text-emerald-200">«Индивидуальное развитие (онтогенез) определяется генами и средой.»</span>
+                        </div>
+                        <button onclick="openModal('Факторы развития', 'Рост и дифференцировка органов управляются фитогормонами у растений и гормонами у животных.')" class="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-300 hover:bg-emerald-500 hover:text-slate-950 transition-all">
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CARD 09: Значение для науки и медицины -->
+            <section id="section-9" class="reveal">
+                <div class="glass-card rounded-3xl p-6 sm:p-10 border border-emerald-500/20 relative overflow-hidden glass-card-hover">
+                    <div class="mb-8">
+                        <div class="inline-flex items-center gap-2 text-emerald-400 font-bold text-lg mb-2">
+                            <span class="px-3 py-1 bg-emerald-500/20 rounded-lg border border-emerald-500/30">09</span>
+                            <span>Значение для науки и медицины</span>
+                        </div>
+                        <h2 class="text-3xl font-extrabold text-white">Биомедицина и биотехнологии</h2>
+                    </div>
+
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                        <div class="glass-banner p-3 rounded-2xl border border-emerald-500/20 space-y-2">
+                            <img src="./Стволовые клетки.jpg" alt="Nature" class="w-full h-24 object-cover rounded-xl">
+                            <div class="text-xs font-bold text-emerald-200 text-center">Стволовые клетки</div>
+                        </div>
+                        <div class="glass-banner p-3 rounded-2xl border border-emerald-500/20 space-y-2">
+                            <img src="./Тканевая инженерия.jpg" alt="Biodiversity" class="w-full h-24 object-cover rounded-xl">
+                            <div class="text-xs font-bold text-emerald-200 text-center">Тканевая инженерия</div>
+                        </div>
+                        <div class="glass-banner p-3 rounded-2xl border border-emerald-500/20 space-y-2">
+                            <img src="./Фармакология.jpg" alt="Medicine" class="w-full h-24 object-cover rounded-xl">
+                            <div class="text-xs font-bold text-emerald-200 text-center">Фармакология</div>
+                        </div>
+                        <div class="glass-banner p-3 rounded-2xl border border-emerald-500/20 space-y-2">
+                            <img src="./Модельные организмы.jpg" alt="Science" class="w-full h-24 object-cover rounded-xl">
+                            <div class="text-xs font-bold text-emerald-200 text-center">Модельные организмы</div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom banner -->
+                    <div class="pt-4 border-t border-emerald-800/40 flex items-center justify-between glass-banner px-6 py-3 rounded-xl">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="leaf" class="w-5 h-5 text-emerald-400"></i>
+                            <span class="text-sm font-medium text-emerald-200">«Исследования многоклеточных продвигают медицину будущего!»</span>
+                        </div>
+                        <button onclick="openModal('Значение для науки', 'Изучение регенерации тканей и стволовых клеток позволяет выращивать искусственные органы.')" class="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-300 hover:bg-emerald-500 hover:text-slate-950 transition-all">
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CARD 10: Интересные факты -->
+            <section id="section-10" class="reveal">
+                <div class="glass-card rounded-3xl p-6 sm:p-10 border border-emerald-500/20 relative overflow-hidden glass-card-hover">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                        <div class="lg:col-span-7 space-y-6">
+                            <div class="inline-flex items-center gap-2 text-emerald-400 font-bold text-lg">
+                                <span class="px-3 py-1 bg-emerald-500/20 rounded-lg border border-emerald-500/30">10</span>
+                                <span>Интересные факты</span>
+                            </div>
+                            <h2 class="text-3xl font-extrabold text-white">Удивительные особенности</h2>
+
+                            <ul class="space-y-4">
+                                <li class="flex items-start gap-3">
+                                    <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">✓</div>
+                                    <span class="text-emerald-100">Крупнейшее животное на Земле — <strong class="text-emerald-300">Синий кит (масса до 150 тонн)</strong>.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">✓</div>
+                                    <span class="text-emerald-100">Тело взрослого человека состоит примерно из <strong class="text-emerald-300">30–40 триллионов клеток</strong>.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">✓</div>
+                                    <span class="text-emerald-100">Самые высокие многоклеточные организмы — <strong class="text-emerald-300">деревья Секвойя (более 110 метров)</strong>.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">✓</div>
+                                    <span class="text-emerald-100">Грибница Опёнка темного в штате Орегон занимает площадь около <strong class="text-emerald-300">8.8 кв. км</strong>.</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="lg:col-span-5 relative">
+                            <div class="rounded-2xl overflow-hidden border border-emerald-500/30 relative h-72">
+                                <img src="./10.jpg" alt="Blue Whale underwater" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-gradient-to-t from-[#03130d] via-transparent to-transparent"></div>
+                                <div class="absolute bottom-4 left-4 right-4 text-xs font-semibold text-emerald-200 glass-banner p-3 rounded-xl border border-emerald-400/30">
+                                    Макроскопический мир поражает своим грандиозным масштабом!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom banner -->
+                    <div class="mt-8 pt-4 border-t border-emerald-800/40 flex items-center justify-between glass-banner px-6 py-3 rounded-xl">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="leaf" class="w-5 h-5 text-emerald-400"></i>
+                            <span class="text-sm font-medium text-emerald-200">«Мир многоклеточных — невероятно богат и разнообразен!»</span>
+                        </div>
+                        <button onclick="openModal('Интересные факты', 'Каждая клетка нашего организма содержит идентичный набор ДНК, но использует только нужные гены!')" class="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-300 hover:bg-emerald-500 hover:text-slate-950 transition-all">
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer id="footer" class="relative mt-20 border-t border-emerald-900/60 overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=1920" alt="Dark Forest Mountain Lake" class="w-full h-full object-cover opacity-20">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#03130d] via-[#03130d]/90 to-transparent"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-8 pb-8 border-b border-emerald-900/40">
+                <div class="space-y-3 text-center md:text-left">
+                    <div class="flex items-center justify-center md:justify-start gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-400">
+                            <i data-lucide="leaf" class="w-6 h-6"></i>
+                        </div>
+                        <span class="text-2xl font-extrabold text-white">Biologiya</span>
+                        
+                        <!-- ID Badge -->
+                        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-950/80 border border-emerald-500/30 text-xs font-mono text-emerald-300 shadow-inner ml-1">
+                            <span class="text-[10px] uppercase tracking-wider text-emerald-500 font-bold">ID:</span>
+                            <span class="font-semibold text-emerald-200">#84920</span>
+                        </div>
+                    </div>
+                    <p class="text-sm font-semibold text-emerald-300">Многоклеточные организмы — вершина биологической эволюции!</p>
+                </div>
+
+                <!-- Ijtimoiy tarmoqlar va Audio tugmasi -->
+                <div class="flex items-center gap-4">
+                    <!-- Audio Tugmasi -->
+                    <button id="bg-audio-btn" type="button" class="w-10 h-10 rounded-full bg-emerald-500/20 border border-emerald-400/50 flex items-center justify-center text-emerald-300 hover:bg-emerald-500 hover:text-slate-950 transition-all shadow-lg cursor-pointer" title="Audioni yoqish/o'chirish">
+                        <i data-lucide="volume-2" class="w-5 h-5"></i>
+                    </button>
+                    <!-- Yashirin Audio Fayi -->
+                    <audio id="bg-audio" src="./footer.mp3" preload="auto"></audio>
+
+                    <div class="h-6 w-[1px] bg-emerald-900/60 my-auto"></div> <!-- Ajratgich chiziq -->
+
+                    <a href="#" class="w-10 h-10 rounded-full bg-emerald-900/40 border border-emerald-500/30 flex items-center justify-center text-emerald-300 hover:bg-emerald-500 hover:text-slate-950 transition-all">
+                        <i class="fa-brands fa-telegram"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-emerald-900/40 border border-emerald-500/30 flex items-center justify-center text-emerald-300 hover:bg-emerald-500 hover:text-slate-950 transition-all">
+                        <i class="fa-brands fa-youtube"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-emerald-900/40 border border-emerald-500/30 flex items-center justify-center text-emerald-300 hover:bg-emerald-500 hover:text-slate-950 transition-all">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-6 text-xs text-emerald-200/80 font-medium">
+                    <a href="#hero" class="hover:text-emerald-400 transition-colors">Главная</a>
+                    <a href="#section-1" class="hover:text-emerald-400 transition-colors">Разделы</a>
+                    <a href="#section-10" class="hover:text-emerald-400 transition-colors">Тесты</a>
+                    <a href="#" class="hover:text-emerald-400 transition-colors">Контакты</a>
+                </div>
+            </div>
+
+            <div class="pt-8 text-center text-xs text-emerald-500/70">
+                © 2026 Biologiya. Все права защищены.
+            </div>
+        </div>
+    </footer>
+    <!-- Modal Dialog -->
+    <div id="infoModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 modal-blur opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="glass-card max-w-lg w-full p-6 sm:p-8 rounded-3xl border border-emerald-400/40 shadow-2xl space-y-6 relative transform scale-95 transition-transform duration-300" id="modalBox">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-emerald-400 hover:text-white p-2">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                    <i data-lucide="book-open" class="w-5 h-5"></i>
+                </div>
+                <h3 id="modalTitle" class="text-xl font-bold text-white">Заголовок</h3>
+            </div>
+            <p id="modalBody" class="text-sm text-emerald-100/90 leading-relaxed">
+                Подробная информация о выбранном разделе.
+            </p>
+            <div class="flex justify-end">
+                <button onclick="closeModal()" class="px-6 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold hover:bg-emerald-400 transition-all text-sm">
+                    Понятно
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript logic -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            let progress = 0;
+            const progressBar = document.getElementById("preloader-bar");
+            const progressCounter = document.getElementById("preloader-counter");
+            const statusText = document.getElementById("preloader-status");
+            const preloader = document.getElementById("preloader");
+            const flashOverlay = document.getElementById("flash-overlay");
+            const bgImage = document.getElementById("bg-image");
+            const centralContent = document.getElementById("central-content");
+            const progressContainer = document.getElementById("progress-container");
+
+            const statuses = [
+                { limit: 20, text: "Инициализация макромира..." },
+                { limit: 40, text: "Загрузка тканей и органов..." },
+                { limit: 65, text: "Формирование систем органов..." },
+                { limit: 85, text: "Настройка процессов регуляции..." },
+                { limit: 100, text: "Готово! Добро пожаловать!" }
+            ];
+
+            const totalDuration = 8000; 
+            const intervalTime = 80; 
+            const increment = 100 / (totalDuration / intervalTime);
+
+            const interval = setInterval(() => {
+                progress += increment;
+
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+
+                    progressBar.style.width = "100%";
+                    progressCounter.innerText = "100%";
+                    if (statusText) {
+                        statusText.innerText = statuses[statuses.length - 1].text;
+                    }
+
+                    setTimeout(() => {
+                        centralContent.style.opacity = "0";
+                        centralContent.style.transform = "scale(0.8)";
+                        progressContainer.style.opacity = "0";
+
+                        bgImage.style.opacity = "1";
+                        bgImage.style.transform = "scale(1)";
+
+                        setTimeout(() => {
+                            flashOverlay.style.opacity = "1";
+
+                            setTimeout(() => {
+                                preloader.style.opacity = "0";
+                                preloader.style.pointerEvents = "none";
+
+                                setTimeout(() => {
+                                    preloader.style.display = "none";
+                                }, 700);
+                            }, 300);
+                        }, 300);
+                    }, 400);
+                } else {
+                    const currentProgress = Math.floor(progress);
+                    progressBar.style.width = currentProgress + "%";
+                    progressCounter.innerText = currentProgress + "%";
+
+                    const currentStatus = statuses.find(s => currentProgress <= s.limit);
+                    if (currentStatus && statusText) {
+                        statusText.innerText = currentStatus.text;
+                    }
+                }
+            }, intervalTime);
+        });
+
+        lucide.createIcons();
+
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, {
+            root: null,
+            threshold: 0.15
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        function openModal(title, text) {
+            const modal = document.getElementById('infoModal');
+            const box = document.getElementById('modalBox');
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalBody').innerText = text;
+
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.classList.add('opacity-100');
+            box.classList.remove('scale-95');
+            box.classList.add('scale-100');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('infoModal');
+            const box = document.getElementById('modalBox');
+
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            box.classList.remove('scale-100');
+            box.classList.add('scale-95');
+        }
+
+        function toggleAudio(id, btn) {
+            const audio = document.getElementById(id);
+            if (!audio) return;
+            
+            if (audio.paused) {
+                audio.play();
+                btn.innerHTML = '<i data-lucide="pause" class="w-6 h-6 text-slate-950"></i>';
+            } else {
+                audio.pause();
+                btn.innerHTML = '<i data-lucide="play" class="w-6 h-6 ml-1 text-slate-950"></i>';
+            }
+            lucide.createIcons();
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+        const audioBtn = document.getElementById('bg-audio-btn');
+        const audio = document.getElementById('bg-audio');
+
+        if (audioBtn && audio) {
+            audioBtn.addEventListener('click', function () {
+                if (audio.paused) {
+                    audio.play().then(() => {
+                        // Ovoz yoqilganda tugma uslubi o'zgaradi
+                        audioBtn.classList.add('bg-emerald-500', 'text-slate-950');
+                        audioBtn.classList.remove('bg-emerald-500/20', 'text-emerald-300');
+                    }).catch(error => {
+                        console.error("Audio ijro xatosi:", error);
+                        alert("Audio fayl yuklanmadi! './footer.mp3' fayli HTML bilan birga bitta papkada borligini va nomi to'g'riligini tekshiring.");
+                    });
+                } else {
+                    audio.pause();
+                    audioBtn.classList.remove('bg-emerald-500', 'text-slate-950');
+                    audioBtn.classList.add('bg-emerald-500/20', 'text-emerald-300');
+                }
+            });
+        }
+
+        // Lucide ikonkalarni faollashtirish (agar kutubxona ulangan bo'lsa)
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    });
+
+    function toggleAudio() {
+        const audio = document.getElementById('bg-audio');
+        const btn = document.getElementById('bg-audio-btn');
+
+        if (audio.paused) {
+            audio.play().then(() => {
+                btn.classList.add('bg-emerald-500', 'text-slate-950');
+            }).catch(() => {
+                alert("Audio fayl yuklanmadi. 'footer.mp3' fayli HTML bilan birga bitta papkada turganini tekshiring.");
+            });
+        } else {
+            audio.pause();
+            btn.classList.remove('bg-emerald-500', 'text-slate-950');
+        }
+    }
+    </script>
+</body>
+</html>
